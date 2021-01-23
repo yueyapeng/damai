@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.damai.wine.dao.mapper.WineRealtimePriceMapper" >
+  <resultMap id="BaseResultMap" type="com.damai.wine.dao.model.WineRealtimePrice" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="wine_product_id" property="wineProductId" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="channel_resource" property="channelResource" jdbcType="VARCHAR" />
+  </resultMap>
+
+
+  <sql id="Base_Column_List" >
+        id, wine_product_id, price, create_time, operator, channel_resource
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from tb_wine_realtime_price
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+
+  <select id="selectByWineProductId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from tb_wine_realtime_price
+    where wine_product_id =  #{wineProductId,jdbcType=VARCHAR}
+  </select>
+
+  <!-- 酒产品符合查询条件 -->
+  <sql id="wineRealtimePriceMultiQueryCondition">
+    <if test="id != null" >
+      and id = #{id,jdbcType=VARCHAR}
+    </if>
+    <if test="wineProductId != null" >
+      and wine_product_id = #{wineProductId,jdbcType=VARCHAR}
+    </if>
+    <if test="price != null" >
+      and price = #{price,jdbcType=VARCHAR}
+    </if>
+    <if test="operator != null" >
+      and operator = #{operator,jdbcType=VARCHAR}
+    </if>
+    <if test="channelResource != null" >
+      and channel_resource = #{channelResource,jdbcType=VARCHAR}
+    </if>
+    <!-- 时间查询条件设置 -->
+    <if test="startTime != null and startTime != ''">
+      <![CDATA[ and create_time >= DATE_FORMAT(#{startTime}, '%Y-%m-%d %H:%i:%S') ]]>
+    </if>
+    <if test="endTime != null and endTime != ''">
+      <![CDATA[ and create_time <= DATE_FORMAT(#{endTime}, '%Y-%m-%d %H:%i:%S') ]]>
+    </if>
+  </sql>
+
+
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.damai.wine.dto.request.price.WineRealtimePriceQueryDto" >
+    select
+    <include refid="Base_Column_List" />
+    from tb_wine_realtime_price
+    where 1 = 1
+    <include refid="wineRealtimePriceMultiQueryCondition" />
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+        delete from tb_wine_realtime_price
+        where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+  <delete id="deleteByWineProductId" parameterType="java.lang.String" >
+        delete from tb_wine_realtime_price
+        where wine_product_id =  #{wineProductId,jdbcType=VARCHAR}
+  </delete>
+
+
+  <insert id="insert" parameterType="com.damai.wine.dao.model.WineRealtimePrice" >
+        insert into tb_wine_realtime_price (id, wine_product_id, price, create_time, operator, channel_resource)
+        values (#{id,jdbcType=VARCHAR}, #{wineProductId,jdbcType=VARCHAR}, #{price,jdbcType=VARCHAR}, now(),
+         #{operator,jdbcType=VARCHAR}, #{channelResource,jdbcType=VARCHAR})
+   </insert>
+
+  <insert id="insertSelective" parameterType="com.damai.wine.dao.model.WineRealtimePrice" >
+    insert into tb_wine_realtime_price
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      create_time,
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="wineProductId != null" >
+        wine_product_id,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="operator != null" >
+        operator,
+      </if>
+      <if test="channelResource != null" >
+        channel_resource,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      now(),
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="wineProductId != null" >
+        #{wineProductId,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="channelResource != null" >
+        #{channelResource,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+</mapper>

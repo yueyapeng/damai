@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.damai.wine.dao.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.damai.wine.dao.model.User" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="open_id" property="openId" jdbcType="VARCHAR" />
+    <result column="session_key" property="sessionKey" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="country" property="country" jdbcType="VARCHAR" />
+    <result column="avatar_url" property="avatarUrl" jdbcType="VARCHAR" />
+    <result column="union_id" property="unionId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+        id, open_id, session_key, phone, nick_name, sex, province, city, country, avatar_url, union_id, create_time, update_time
+  </sql>
+
+  <select id="selectByOpenId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from tb_user
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from tb_user
+    where open_id = #{openId,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from tb_user
+        where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+
+  <insert id="insert" parameterType="com.damai.wine.dao.model.User" >
+        insert into tb_user (id, open_id, session_key, phone,
+        nick_name, sex, province, city, country, avatar_url, union_id, create_time, update_time)
+        values (#{id,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, #{sessionKey,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
+         #{nickName,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR},
+         #{country,jdbcType=VARCHAR}, #{avatarUrl,jdbcType=VARCHAR}, #{unionId,jdbcType=VARCHAR}, now(), now())
+   </insert>
+
+  <insert id="insertSelective" parameterType="com.damai.wine.dao.model.User" >
+    insert into tb_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      create_time, update_time,
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="openId != null" >
+        open_id,
+      </if>
+      <if test="sessionKey != null" >
+        session_key,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="nickName != null" >
+        nick_name,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="country != null" >
+        country,
+      </if>
+      <if test="avatarUrl != null" >
+        avatar_url,
+      </if>
+      <if test="unionId != null" >
+        union_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      now(), now(),
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null" >
+        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="sessionKey != null" >
+        #{sessionKey,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null" >
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="country != null" >
+        #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="avatarUrl != null" >
+        #{avatarUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="unionId != null" >
+        #{unionId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.damai.wine.dao.model.User" >
+    update tb_user
+    <set >
+      <if test="openId != null" >
+        open_id = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="sessionKey != null" >
+        session_key = #{sessionKey,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null" >
+        nick_name = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="country != null" >
+        country = #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="avatarUrl != null" >
+        avatar_url = #{avatarUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="unionId != null" >
+        union_id = #{unionId,jdbcType=VARCHAR},
+      </if>
+      update_time = now()
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+
+  <update id="updateByOpenIdSelective" parameterType="com.damai.wine.dao.model.User" >
+        update tb_user
+        <set >
+          <if test="sessionKey != null" >
+            session_key = #{sessionKey,jdbcType=VARCHAR},
+          </if>
+          <if test="phone != null" >
+            phone = #{phone,jdbcType=VARCHAR},
+          </if>
+          <if test="nickName != null" >
+            nick_name = #{nickName,jdbcType=VARCHAR},
+          </if>
+          <if test="sex != null" >
+            sex = #{sex,jdbcType=VARCHAR},
+          </if>
+          <if test="province != null" >
+            province = #{province,jdbcType=VARCHAR},
+          </if>
+          <if test="city != null" >
+            city = #{city,jdbcType=VARCHAR},
+          </if>
+          <if test="country != null" >
+            country = #{country,jdbcType=VARCHAR},
+          </if>
+          <if test="avatarUrl != null" >
+            avatar_url = #{avatarUrl,jdbcType=VARCHAR},
+          </if>
+          <if test="unionId != null" >
+            union_id = #{unionId,jdbcType=VARCHAR},
+          </if>
+          update_time = now()
+        </set>
+        where open_id = #{openId,jdbcType=VARCHAR}
+    </update>
+
+</mapper>

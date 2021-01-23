@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.damai.wine.dao.mapper.WineOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.damai.wine.dao.model.WineOrder" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="wine_product_id" property="wineProductId" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="wine_realtime_price_id" property="wineRealtimePriceId" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="wine_type" property="wineType" jdbcType="CHAR" />
+    <result column="wine_brand" property="wineBrand" jdbcType="VARCHAR" />
+    <result column="production_year" property="productionYear" jdbcType="VARCHAR" />
+    <result column="chinese_zodiac" property="chineseZodiac" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="VARCHAR" />
+
+    <result column="bottle_number" property="bottleNumber" jdbcType="VARCHAR" />
+    <result column="total_amount" property="totalAmount" jdbcType="VARCHAR" />
+
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="mail_time" property="mailTime" jdbcType="TIMESTAMP" />
+    <result column="receipt_time" property="receiptTime" jdbcType="TIMESTAMP" />
+    <result column="identification_time" property="identificationTime" jdbcType="TIMESTAMP" />
+    <result column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
+    <result column="back_time" property="backTime" jdbcType="TIMESTAMP" />
+    <result column="valid_time" property="validTime" jdbcType="TIMESTAMP" />
+    <result column="col_type" property="colType" jdbcType="CHAR" />
+    <result column="col_account" property="colAccount" jdbcType="VARCHAR" />
+    <result column="col_name" property="colName" jdbcType="VARCHAR" />
+    <result column="identification_result" property="identificationResult" jdbcType="CHAR" />
+    <result column="receiver" property="receiver" jdbcType="VARCHAR" />
+    <result column="receiver_phone" property="receiverPhone" jdbcType="VARCHAR" />
+    <result column="receiver_address" property="receiverAddress" jdbcType="VARCHAR" />
+    <result column="express_type" property="expressType" jdbcType="VARCHAR" />
+    <result column="express_company" property="expressCompany" jdbcType="VARCHAR" />
+    <result column="express_bill_no" property="expressBillNo" jdbcType="VARCHAR" />
+    <result column="express_fee" property="expressFee" jdbcType="VARCHAR" />
+    <result column="back_express_bill_no" property="backExpressBillNo" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+        id, wine_product_id, user_id, wine_realtime_price_id, phone, wine_type, wine_brand, production_year, chinese_zodiac, price,bottle_number, total_amount,
+        status, create_time, update_time, mail_time, receipt_time, identification_time, pay_time, back_time, valid_time,
+        col_type, col_account, col_name, identification_result, receiver, receiver_phone, receiver_address,
+        express_type, express_company, express_bill_no, express_fee, back_express_bill_no, remark
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from tb_wine_order
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <!-- 订单复合查询条件 -->
+  <sql id="wineOrderMultiQueryCondition">
+
+    <if test="id != null" >
+      and id = #{id,jdbcType=VARCHAR}
+    </if>
+    <if test="wineProductId != null" >
+      and wine_product_id = #{wineProductId,jdbcType=VARCHAR}
+    </if>
+    <if test="userId != null" >
+      and user_id = #{userId,jdbcType=VARCHAR}
+    </if>
+    <if test="wineRealtimePriceId != null" >
+      and wine_realtime_price_id = #{wineRealtimePriceId,jdbcType=VARCHAR}
+    </if>
+    <if test="phone != null" >
+      and phone = #{phone,jdbcType=VARCHAR}
+    </if>
+    <if test="wineType != null" >
+      and wine_type = #{wineType,jdbcType=VARCHAR}
+    </if>
+    <if test="wineBrand != null" >
+      and wine_brand = #{wineBrand,jdbcType=VARCHAR}
+    </if>
+    <if test="productionYear != null" >
+      and production_year = #{productionYear,jdbcType=VARCHAR}
+    </if>
+    <if test="chineseZodiac != null" >
+      and chinese_zodiac = #{chineseZodiac,jdbcType=VARCHAR}
+    </if>
+    <if test="price != null" >
+      and price = #{price,jdbcType=VARCHAR}
+    </if>
+    <if test="bottleNumber != null" >
+      and bottle_number = #{bottleNumber,jdbcType=VARCHAR}
+    </if>
+    <if test="totalAmount != null" >
+      and total_amount = #{totalAmount,jdbcType=VARCHAR}
+    </if>
+    <if test="status != null" >
+      and status = #{status,jdbcType=VARCHAR}
+    </if>
+    <!-- 时间查询条件设置 -->
+    <if test="startTime != null and startTime != ''">
+      <if test="timeFlag != null" >
+        <if test="timeFlag == 1 ">
+          <![CDATA[ and create_time >= DATE_FORMAT(#{startTime}, '%Y-%m-%d %H:%i:%S') ]]>
+        </if>
+        <if test="timeFlag == 2 ">
+          <![CDATA[ and mail_time >= DATE_FORMAT(#{startTime}, '%Y-%m-%d %H:%i:%S') ]]>
+        </if>
+        <if test="timeFlag == 3 ">
+          <![CDATA[ and receipt_time >= DATE_FORMAT(#{startTime}, '%Y-%m-%d %H:%i:%S') ]]>
+        </if>
+        <if test="timeFlag == 4 ">
+          <![CDATA[ and identification_time >= DATE_FORMAT(#{startTime}, '%Y-%m-%d %H:%i:%S') ]]>
+        </if>
+        <if test="timeFlag == 5 ">
+          <![CDATA[ and pay_time >= DATE_FORMAT(#{startTime}, '%Y-%m-%d %H:%i:%S') ]]>
+        </if>
+        <if test="timeFlag == 6 ">
+          <![CDATA[ and back_time >= DATE_FORMAT(#{startTime}, '%Y-%m-%d %H:%i:%S') ]]>
+        </if>
+        <if test="timeFlag == 7 ">
+          <![CDATA[ and valid_time >= DATE_FORMAT(#{startTime}, '%Y-%m-%d %H:%i:%S') ]]>
+        </if>
+        <if test="timeFlag == 8 ">
+          <![CDATA[ and update_time >= DATE_FORMAT(#{startTime}, '%Y-%m-%d %H:%i:%S') ]]>
+        </if>
+      </if>
+    </if>
+    <if test="endTime != null and endTime != ''" >
+      <if test="timeFlag != null" >
+        <if test="timeFlag == 1 ">
+          <![CDATA[ and create_time <= DATE_FORMAT(#{endTime}, '%Y-%m-%d %H:%i:%S') ]]>
+        </if>
+        <if test="timeFlag == 2 ">
+          <![CDATA[ and mail_time <= DATE_FORMAT(#{endTime}, '%Y-%m-%d %H:%i:%S') ]]>
+        </if>
+        <if test="timeFlag == 3 ">
+          <![CDATA[ and receipt_time <= DATE_FORMAT(#{endTime}, '%Y-%m-%d %H:%i:%S') ]]>
+        </if>
+        <if test="timeFlag == 4 ">
+          <![CDATA[ and identification_time <= DATE_FORMAT(#{endTime}, '%Y-%m-%d %H:%i:%S') ]]>
+        </if>
+        <if test="timeFlag == 5 ">
+          <![CDATA[ and pay_time <= DATE_FORMAT(#{endTime}, '%Y-%m-%d %H:%i:%S') ]]>
+        </if>
+        <if test="timeFlag == 6 ">
+          <![CDATA[ and back_time <= DATE_FORMAT(#{endTime}, '%Y-%m-%d %H:%i:%S') ]]>
+        </if>
+        <if test="timeFlag == 7 ">
+          <![CDATA[ and valid_time <= DATE_FORMAT(#{endTime}, '%Y-%m-%d %H:%i:%S') ]]>
+        </if>
+        <if test="timeFlag == 8 ">
+          <![CDATA[ and update_time <= DATE_FORMAT(#{endTime}, '%Y-%m-%d %H:%i:%S') ]]>
+        </if>
+      </if>
+    </if>
+    <if test="colType != null" >
+      and col_type = #{colType,jdbcType=VARCHAR}
+    </if>
+    <if test="colAccount != null" >
+      and col_account = #{colAccount,jdbcType=VARCHAR}
+    </if>
+    <if test="colName != null" >
+      and col_name = #{colName,jdbcType=VARCHAR}
+    </if>
+    <if test="identificationResult != null" >
+      and identification_result = #{identificationResult,jdbcType=VARCHAR}
+    </if>
+    <if test="receiver != null" >
+      and receiver = #{receiver,jdbcType=VARCHAR}
+    </if>
+    <if test="receiverPhone != null" >
+      and receiver_phone = #{receiverPhone,jdbcType=VARCHAR}
+    </if>
+    <if test="receiverAddress != null" >
+      and receiver_address = #{receiverAddress,jdbcType=VARCHAR}
+    </if>
+    <if test="expressType != null" >
+      and express_type = #{expressType,jdbcType=VARCHAR}
+    </if>
+    <if test="expressCompany != null" >
+      and express_company = #{expressCompany,jdbcType=VARCHAR}
+    </if>
+    <if test="expressBillNo != null" >
+      and express_bill_no = #{expressBillNo,jdbcType=VARCHAR}
+    </if>
+    <if test="expressFee != null" >
+      and express_fee = #{expressFee,jdbcType=VARCHAR}
+    </if>
+    <if test="backExpressBillNo != null" >
+      and back_express_bill_no = #{backExpressBillNo,jdbcType=VARCHAR}
+    </if>
+    <if test="remark != null" >
+      and remark = #{remark,jdbcType=VARCHAR}
+    </if>
+  </sql>
+
+
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.damai.wine.dto.request.order.WineOrderQueryDto" >
+    select
+    <include refid="Base_Column_List" />
+    from tb_wine_order
+    where 1 = 1
+    <include refid="wineOrderMultiQueryCondition" />
+  </select>
+
+  <insert id="insertSelective" parameterType="com.damai.wine.dao.model.WineOrder" >
+    insert into tb_wine_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      create_time, update_time,
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="wineProductId != null" >
+        wine_product_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="wineRealtimePriceId != null" >
+        wine_realtime_price_id,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="wineType != null" >
+        wine_type,
+      </if>
+      <if test="wineBrand != null" >
+        wine_brand,
+      </if>
+      <if test="productionYear != null" >
+        production_year,
+      </if>
+      <if test="chineseZodiac != null" >
+        chinese_zodiac,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="bottleNumber != null" >
+        bottle_number,
+      </if>
+      <if test="totalAmount != null" >
+        total_amount,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="colType != null" >
+        col_type,
+      </if>
+      <if test="colAccount != null" >
+        col_account,
+      </if>
+      <if test="colName != null" >
+        col_name,
+      </if>
+      <if test="identificationResult != null" >
+        identification_result,
+      </if>
+      <if test="receiver != null" >
+        receiver,
+      </if>
+      <if test="receiverPhone != null" >
+        receiver_phone,
+      </if>
+      <if test="receiverAddress != null" >
+        receiver_address,
+      </if>
+      <if test="expressType != null" >
+        express_type,
+      </if>
+      <if test="expressCompany != null" >
+        express_company,
+      </if>
+      <if test="expressBillNo != null" >
+        express_bill_no,
+      </if>
+      <if test="expressFee != null" >
+        express_fee,
+      </if>
+      <if test="backExpressBillNo != null" >
+        back_express_bill_no,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      now(), now(),
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="wineProductId != null" >
+        #{wineProductId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="wineRealtimePriceId != null" >
+        #{wineRealtimePriceId,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="wineType != null" >
+        #{wineType,jdbcType=VARCHAR},
+      </if>
+      <if test="wineBrand != null" >
+        #{wineBrand,jdbcType=VARCHAR},
+      </if>
+      <if test="productionYear != null" >
+        #{productionYear,jdbcType=VARCHAR},
+      </if>
+      <if test="chineseZodiac != null" >
+        #{chineseZodiac,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=VARCHAR},
+      </if>
+      <if test="bottleNumber != null" >
+        #{bottleNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="totalAmount != null" >
+        #{totalAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="colType != null" >
+        #{colType,jdbcType=VARCHAR},
+      </if>
+      <if test="colAccount != null" >
+        #{colAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="colName != null" >
+        #{colName,jdbcType=VARCHAR},
+      </if>
+      <if test="identificationResult != null" >
+        #{identificationResult,jdbcType=VARCHAR},
+      </if>
+      <if test="receiver != null" >
+        #{receiver,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverPhone != null" >
+        #{receiverPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverAddress != null" >
+        #{receiverAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="expressType != null" >
+        #{expressType,jdbcType=VARCHAR},
+      </if>
+      <if test="expressCompany != null" >
+        #{expressCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="expressBillNo != null" >
+        #{expressBillNo,jdbcType=VARCHAR},
+      </if>
+      <if test="expressFee != null" >
+        #{expressFee,jdbcType=VARCHAR},
+      </if>
+      <if test="backExpressBillNo != null" >
+        #{backExpressBillNo,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.damai.wine.dao.model.WineOrder" >
+    update tb_wine_order
+    <set >
+      <if test="wineProductId != null" >
+        wine_product_id = #{wineProductId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="wineRealtimePriceId != null" >
+        wine_realtime_price_id = #{wineRealtimePriceId,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="wineType != null" >
+        wine_type = #{wineType,jdbcType=VARCHAR},
+      </if>
+      <if test="wineBrand != null" >
+        wine_brand = #{wineBrand,jdbcType=VARCHAR},
+      </if>
+      <if test="productionYear != null" >
+        production_year = #{productionYear,jdbcType=VARCHAR},
+      </if>
+      <if test="chineseZodiac != null" >
+        chinese_zodiac = #{chineseZodiac,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=VARCHAR},
+      </if>
+      <if test="bottleNumber != null" >
+        bottle_number = #{bottleNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="totalAmount != null" >
+        total_amount = #{totalAmount,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="colType != null" >
+        col_type = #{colType,jdbcType=VARCHAR},
+      </if>
+      <if test="colAccount != null" >
+        col_account = #{colAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="colName != null" >
+        col_name = #{colName,jdbcType=VARCHAR},
+      </if>
+      <if test="identificationResult != null" >
+        identification_result = #{identificationResult,jdbcType=VARCHAR},
+      </if>
+      <if test="receiver != null" >
+        receiver = #{receiver,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverPhone != null" >
+        receiver_phone = #{receiverPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverAddress != null" >
+        receiver_address = #{receiverAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="expressType != null" >
+        express_type = #{expressType,jdbcType=VARCHAR},
+      </if>
+      <if test="expressCompany != null" >
+        express_company = #{expressCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="expressBillNo != null" >
+        express_bill_no = #{expressBillNo,jdbcType=VARCHAR},
+      </if>
+      <if test="expressFee != null" >
+        express_fee = #{expressFee,jdbcType=VARCHAR},
+      </if>
+      <if test="backExpressBillNo != null" >
+        back_express_bill_no = #{backExpressBillNo,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <!-- 时间设置 -->
+      <if test="mailTime != null" >
+        mail_time = #{mailTime,jdbcType=TIMESTAMP},
+      </if>
+
+      <if test="receiptTime != null" >
+        receipt_time = #{receiptTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="identificationTime != null" >
+        identification_time = #{identificationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payTime != null" >
+        pay_time = #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="backTime != null" >
+        back_time = #{backTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="validTime != null" >
+        valid_time = #{validTime,jdbcType=TIMESTAMP},
+      </if>
+      update_time = now()
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

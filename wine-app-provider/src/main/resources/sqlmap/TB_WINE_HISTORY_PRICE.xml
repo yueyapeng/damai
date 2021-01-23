@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.damai.wine.dao.mapper.WineHistoryPriceMapper" >
+  <resultMap id="BaseResultMap" type="com.damai.wine.dao.model.WineHistoryPrice" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="wine_realtime_price_id" property="wineRealtimePriceId" jdbcType="VARCHAR" />
+    <result column="wine_product_id" property="wineProductId" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_day" property="createDay" jdbcType="VARCHAR" />
+    <result column="channel_resource" property="channelResource" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+        id, wine_realtime_price_id, wine_product_id, price, create_time, create_day, channel_resource
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from tb_wine_history_price
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <!-- 根据商品的实时价格 id 查询历史价格记录（实时价格记录删除后会被移动至历史价格记录） -->
+  <select id="selectByWineRealtimePriceId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from tb_wine_history_price
+    where wine_realtime_price_id = #{wineRealtimePriceId,jdbcType=VARCHAR}
+  </select>
+
+  <!--<select id="selectByWineProductId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from tb_wine_history_price
+    where wine_product_id =  #{wineProductId,jdbcType=VARCHAR}
+  </select>-->
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+        delete from tb_wine_history_price
+        where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+   <insert id="insert" parameterType="com.damai.wine.dao.model.WineHistoryPrice" >
+        insert into tb_wine_history_price (id, wine_realtime_price_id, wine_product_id, price, create_time, create_day, channel_resource)
+        values (#{id,jdbcType=VARCHAR}, #{wineRealtimePriceId,jdbcType=VARCHAR}, #{wineProductId,jdbcType=VARCHAR}, #{price,jdbcType=VARCHAR}, now(),
+         #{createDay,jdbcType=VARCHAR}, #{channelResource,jdbcType=VARCHAR})
+   </insert>
+
+  <insert id="insertSelective" parameterType="com.damai.wine.dao.model.WineHistoryPrice" >
+    insert into tb_wine_realtime_price
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      create_time,
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="wineRealtimePriceId != null" >
+        wine_realtime_price_id,
+      </if>
+      <if test="wineProductId != null" >
+        wine_product_id,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="createDay != null" >
+        create_day,
+      </if>
+      <if test="channelResource != null" >
+        channel_resource,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      now(),
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="wineRealtimePriceId != null" >
+        #{wineRealtimePriceId,jdbcType=VARCHAR},
+      </if>
+      <if test="wineProductId != null" >
+        #{wineProductId,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=VARCHAR},
+      </if>
+      <if test="createDay != null" >
+        #{createDay,jdbcType=VARCHAR},
+      </if>
+      <if test="channelResource != null" >
+        #{channelResource,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+
+
+</mapper>

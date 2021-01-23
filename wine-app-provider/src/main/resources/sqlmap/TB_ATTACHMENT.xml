@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.damai.wine.dao.mapper.AttachmentMapper" >
+  <resultMap id="BaseResultMap" type="com.damai.wine.dao.model.Attachment" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="relation_id" property="relationId" jdbcType="VARCHAR" />
+    <result column="attachment_type" property="attachmentType" jdbcType="VARCHAR" />
+    <result column="attachment_name" property="attachmentName" jdbcType="VARCHAR" />
+    <result column="attachment_detail_type" property="attachmentDetailType" jdbcType="VARCHAR" />
+    <result column="attachment_url" property="attachmentUrl" jdbcType="VARCHAR" />
+    <result column="data_source" property="dataSource" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="mark" property="mark" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+        id, relation_id, attachment_type, attachment_name, attachment_detail_type, attachment_url, data_source, mark, create_time, update_time
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from tb_attachment
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <!-- 附件复合查询条件 -->
+  <sql id="attachmentMultiQueryCondition">
+    <if test="id != null" >
+      and id = #{id,jdbcType=VARCHAR}
+    </if>
+    <if test="relationId != null" >
+      and relation_id = #{relationId,jdbcType=VARCHAR}
+    </if>
+    <if test="attachmentType != null" >
+      and attachment_type = #{attachmentType,jdbcType=VARCHAR}
+    </if>
+    <if test="attachmentName != null" >
+      and attachment_name = #{attachmentName,jdbcType=VARCHAR}
+    </if>
+    <if test="attachmentDetailType != null" >
+      and attachment_detail_type = #{attachmentDetailType,jdbcType=VARCHAR}
+    </if>
+    <if test="dataSource != null" >
+      and data_source = #{dataSource,jdbcType=VARCHAR}
+    </if>
+    <if test="remark != null" >
+      and remark = #{remark,jdbcType=VARCHAR}
+    </if>
+    <!-- 时间查询条件设置 -->
+    <if test="startTime != null and startTime != ''">
+      <![CDATA[ and create_time >= DATE_FORMAT(#{startTime}, '%Y-%m-%d %H:%i:%S') ]]>
+    </if>
+    <if test="endTime != null and endTime != ''">
+      <![CDATA[ and create_time <= DATE_FORMAT(#{endTime}, '%Y-%m-%d %H:%i:%S') ]]>
+    </if>
+  </sql>
+
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.damai.wine.dto.request.attachment.AttachmentQueryDto" >
+    select
+    <include refid="Base_Column_List" />
+    from tb_attachment
+    where 1 = 1
+    <include refid="attachmentMultiQueryCondition" />
+  </select>
+
+
+  <select id="selectByRealtionIdAndType" resultMap="BaseResultMap" parameterType="com.damai.wine.dao.model.Attachment" >
+    select
+    <include refid="Base_Column_List" />
+    from tb_attachment
+    where 1 = 1
+    <include refid="attachmentMultiQueryCondition" />
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from tb_attachment
+        where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+
+  <insert id="insert" parameterType="com.damai.wine.dao.model.Attachment" >
+        insert into tb_attachment (id, relation_id, attachment_type, attachment_name,
+        attachment_detail_type, attachment_url, data_source, mark, create_time, update_time)
+        values (#{id,jdbcType=VARCHAR}, #{relationId,jdbcType=VARCHAR}, #{attachmentType,jdbcType=VARCHAR}, #{attachmentName,jdbcType=VARCHAR},
+         #{attachmentDetailType,jdbcType=VARCHAR}, #{attachmentUrl,jdbcType=VARCHAR}, #{dataSource,jdbcType=VARCHAR}, #{mark,jdbcType=VARCHAR}, now(), now())
+   </insert>
+
+  <insert id="insertSelective" parameterType="com.damai.wine.dao.model.Attachment" >
+    insert into tb_attachment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      create_time, update_time,
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="relationId != null" >
+        relation_id,
+      </if>
+      <if test="attachmentType != null" >
+        attachment_type,
+      </if>
+      <if test="attachmentName != null" >
+        attachment_name,
+      </if>
+      <if test="attachmentDetailType != null" >
+        attachment_detail_type,
+      </if>
+      <if test="attachmentUrl != null" >
+        attachment_url,
+      </if>
+      <if test="dataSource != null" >
+        data_source,
+      </if>
+      <if test="mark != null" >
+        mark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      now(), now(),
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="relationId != null" >
+        #{relationId,jdbcType=VARCHAR},
+      </if>
+      <if test="attachmentType != null" >
+        #{attachmentType,jdbcType=VARCHAR},
+      </if>
+      <if test="attachmentName != null" >
+        #{attachmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="attachmentDetailType != null" >
+        #{attachmentDetailType,jdbcType=VARCHAR},
+      </if>
+      <if test="attachmentUrl != null" >
+        #{attachmentUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="dataSource != null" >
+        #{dataSource,jdbcType=VARCHAR},
+      </if>
+      <if test="mark != null" >
+        #{mark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+
+</mapper>

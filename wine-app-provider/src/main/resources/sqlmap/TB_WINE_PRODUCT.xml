@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.damai.wine.dao.mapper.WineProductMapper" >
+  <resultMap id="BaseResultMap" type="com.damai.wine.dao.model.WineProduct" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="wine_type" property="wineType" jdbcType="VARCHAR" />
+    <result column="wine_brand" property="wineBrand" jdbcType="VARCHAR" />
+    <result column="production_year" property="productionYear" jdbcType="VARCHAR" />
+    <result column="degree" property="degree" jdbcType="VARCHAR" />
+    <result column="capacity" property="capacity" jdbcType="VARCHAR" />
+    <result column="chinese_zodiac" property="chineseZodiac" jdbcType="VARCHAR" />
+    <result column="packaging" property="packaging" jdbcType="VARCHAR" />
+    <result column="bottle_number" property="bottleNumber" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+
+  <sql id="Base_Column_List" >
+        id, wine_type, wine_brand, production_year, degree, capacity, chinese_zodiac, packaging, bottle_number, status, create_time, update_time
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from tb_wine_product
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <!-- 酒产品符合查询条件 -->
+  <sql id="wineProductMultiQueryCondition">
+    <if test="id != null" >
+      and id = #{id,jdbcType=VARCHAR}
+    </if>
+    <if test="wineType != null" >
+      and wine_type = #{wineType,jdbcType=VARCHAR}
+    </if>
+    <if test="wineBrand != null" >
+      and wine_brand = #{wineBrand,jdbcType=VARCHAR}
+    </if>
+    <if test="productionYear != null" >
+      and production_year = #{productionYear,jdbcType=VARCHAR}
+    </if>
+    <if test="degree != null" >
+      and degree = #{degree,jdbcType=VARCHAR}
+    </if>
+    <if test="capacity != null" >
+      and capacity = #{capacity,jdbcType=VARCHAR}
+    </if>
+    <if test="chineseZodiac != null" >
+      and chinese_zodiac = #{chineseZodiac,jdbcType=VARCHAR}
+    </if>
+    <if test="packaging != null" >
+      and packaging = #{packaging,jdbcType=VARCHAR}
+    </if>
+    <if test="bottleNumber != null" >
+      and bottle_number = #{bottleNumber,jdbcType=VARCHAR}
+    </if>
+    <if test="status != null" >
+      and status = #{status,jdbcType=VARCHAR}
+    </if>
+    <!-- 时间查询条件设置 -->
+    <if test="startTime != null and startTime != ''">
+      <![CDATA[ and create_time >= DATE_FORMAT(#{startTime}, '%Y-%m-%d %H:%i:%S') ]]>
+    </if>
+    <if test="endTime != null and endTime != ''">
+      <![CDATA[ and create_time <= DATE_FORMAT(#{endTime}, '%Y-%m-%d %H:%i:%S') ]]>
+    </if>
+  </sql>
+  
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.damai.wine.dto.request.product.WineProductQueryDto" >
+    select
+    <include refid="Base_Column_List" />
+    from tb_wine_product
+    where 1 = 1
+    <include refid="wineProductMultiQueryCondition" />
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+        delete from tb_wine_product
+        where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+
+  <insert id="insert" parameterType="com.damai.wine.dao.model.WineProduct" >
+        insert into tb_wine_product (id, wine_type, wine_brand, production_year,
+        degree, capacity, chinese_zodiac, packaging,
+        bottle_number, status, create_time, update_time)
+        values (#{id,jdbcType=VARCHAR}, #{wineType,jdbcType=VARCHAR}, #{wineBrand,jdbcType=VARCHAR}, #{productionYear,jdbcType=VARCHAR},
+         #{degree,jdbcType=VARCHAR}, #{capacity,jdbcType=VARCHAR}, #{chineseZodiac,jdbcType=VARCHAR}, #{packaging,jdbcType=VARCHAR},
+         #{bottleNumber,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, now(), now())
+   </insert>
+
+  <insert id="insertSelective" parameterType="com.damai.wine.dao.model.WineProduct" >
+    insert into tb_wine_product
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      create_time, update_time,
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="wineType != null" >
+        wine_type,
+      </if>
+      <if test="wineBrand != null" >
+        wine_brand,
+      </if>
+      <if test="productionYear != null" >
+        production_year,
+      </if>
+      <if test="degree != null" >
+        degree,
+      </if>
+      <if test="capacity != null" >
+        capacity,
+      </if>
+      <if test="chineseZodiac != null" >
+        chinese_zodiac,
+      </if>
+      <if test="packaging != null" >
+        packaging,
+      </if>
+      <if test="bottleNumber != null" >
+        bottle_number,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      now(), now(),
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="wineType != null" >
+        #{wineType,jdbcType=VARCHAR},
+      </if>
+      <if test="wineBrand != null" >
+        #{wineBrand,jdbcType=VARCHAR},
+      </if>
+      <if test="productionYear != null" >
+        #{productionYear,jdbcType=VARCHAR},
+      </if>
+      <if test="degree != null" >
+        #{degree,jdbcType=VARCHAR},
+      </if>
+      <if test="capacity != null" >
+        #{capacity,jdbcType=VARCHAR},
+      </if>
+      <if test="chineseZodiac != null" >
+        #{chineseZodiac,jdbcType=VARCHAR},
+      </if>
+      <if test="packaging != null" >
+        #{packaging,jdbcType=VARCHAR},
+      </if>
+      <if test="bottleNumber != null" >
+        #{bottleNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.damai.wine.dao.model.WineProduct" >
+    update tb_wine_product
+    <set >
+      <if test="wineType != null" >
+        wine_type = #{wineType,jdbcType=VARCHAR},
+      </if>
+      <if test="wineBrand != null" >
+        wine_brand = #{wineBrand,jdbcType=VARCHAR},
+      </if>
+      <if test="productionYear != null" >
+        production_year = #{productionYear,jdbcType=VARCHAR},
+      </if>
+      <if test="degree != null" >
+        degree = #{degree,jdbcType=VARCHAR},
+      </if>
+      <if test="capacity != null" >
+        capacity = #{capacity,jdbcType=VARCHAR},
+      </if>
+      <if test="chineseZodiac != null" >
+        chinese_zodiac = #{chineseZodiac,jdbcType=VARCHAR},
+      </if>
+      <if test="packaging != null" >
+        packaging = #{packaging,jdbcType=VARCHAR},
+      </if>
+      <if test="bottleNumber != null" >
+        bottle_number = #{bottleNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      update_time = now()
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+
+</mapper>
